@@ -1,5 +1,8 @@
 {
   "semi": false,
   "arrowParens": "always",
-  "singleQuote": true
+  "singleQuote": true,
+  "prettier/prettier": ["error", {
+    "endOfLine":"crlf"
+  }]
 }
