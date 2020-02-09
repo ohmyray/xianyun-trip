@@ -26,5 +26,25 @@ export const actions = {
       commit('setUserInfo', data)
       return data
     })
+  },
+
+  // 验证码校验
+  captcha(store, data) {
+    return this.$axios({
+      url: `/captchas`,
+      method: 'POST',
+      data
+    }).then((res) => {
+      return res
+    })
+  },
+
+  // 注册
+  register({ commit }, data) {
+    return this.$axios({
+      url: '/accounts/register',
+      method: 'POST',
+      data
+    })
   }
 }
