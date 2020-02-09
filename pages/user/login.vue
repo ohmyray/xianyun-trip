@@ -27,6 +27,7 @@
 
 <script>
 import LoginForm from '@/components/user/loginForm'
+// import RegisterForm from '@/components/user/registerForm'
 
 export default {
   components: {

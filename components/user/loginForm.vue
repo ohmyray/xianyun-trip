@@ -1,11 +1,17 @@
 <template>
-  <el-form :model="form" ref="form" :rules="rules" class="form">
-    <el-form-item class="form-item">
-      <el-input v-model="form.username" placeholder="用户名/手机"> </el-input>
+  <el-form
+    ref="loginFormRef"
+    :model="loginForm"
+    :rules="loginRules"
+    class="form"
+  >
+    <el-form-item class="form-item" prop="username">
+      <el-input v-model="loginForm.username" placeholder="用户名/手机">
+      </el-input>
     </el-form-item>
 
-    <el-form-item class="form-item">
-      <el-input v-model="form.password" placeholder="密码" type="password">
+    <el-form-item class="form-item" prop="password">
+      <el-input v-model="loginForm.password" placeholder="密码" type="password">
       </el-input>
     </el-form-item>
 
@@ -13,7 +19,7 @@
       <nuxt-link to="#">忘记密码</nuxt-link>
     </p>
 
-    <el-button class="submit" type="primary" @click="handleLoginSubmit">
+    <el-button @click="handleLoginSubmit" type="primary" class="submit">
       登录
     </el-button>
   </el-form>
@@ -22,20 +28,58 @@
 <script>
 export default {
   data() {
+    const validateUsername = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.loginForm.checkPass !== '') {
+          this.$refs.loginFormRef.validateField('checkPass')
+        }
+        callback()
+      }
+    }
     return {
       // 表单数据
-      form: {
+      loginForm: {
         username: '', // 登录用户名/手机
         password: '' // 登录密码
       },
       // 表单规则
-      rules: {}
+      loginRules: {
+        username: [
+          { required: true, message: '请输入用户名/手机', trigger: 'blur' },
+          { validator: validateUsername, trigger: 'blur' }
+        ],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+      }
     }
   },
   methods: {
     // 提交登录
     handleLoginSubmit() {
-      console.log(this.form)
+      console.log(this.loginForm)
+      // valid是全部字段验证通过才会返回true
+      this.$refs.loginFormRef.validate((valid) => {
+        if (valid) {
+          // console.log(111)
+          // this.$axios({
+          //   url: '/accounts/login',
+          //   method: 'POST',
+          //   data: this.loginForm
+          // }).then((res) => {
+          //   console.log(res)
+          // })
+          this.$store.dispatch('user/login', this.loginForm).then((res) => {
+            // console.log(res.data)
+            this.$message({
+              message: '登录成功，正在跳转~~~',
+              type: 'success'
+            })
+            this.$router.push({ path: '/' })
+          })
+        }
+        // console.log(222)
+      })
     }
   }
 }
