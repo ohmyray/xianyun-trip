@@ -32,7 +32,7 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (this.loginForm.checkPass !== '') {
+        if (this.loginForm.username !== '') {
           this.$refs.loginFormRef.validateField('checkPass')
         }
         callback()
