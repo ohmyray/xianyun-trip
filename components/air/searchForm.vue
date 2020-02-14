@@ -17,7 +17,7 @@
         <!-- fetch-suggestions 返回输入建议的方法 -->
         <!-- select 点击选中建议项时触发 -->
         <el-autocomplete
-          v-model="form.departCity"
+          v-model.trim="form.departCity"
           :fetch-suggestions="queryDepartSearch"
           @select="handleDepartSelect"
           @blur="handleDepartBlur"
@@ -27,7 +27,7 @@
       </el-form-item>
       <el-form-item label="到达城市">
         <el-autocomplete
-          v-model="form.destCity"
+          v-model.trim="form.destCity"
           :fetch-suggestions="queryDestSearch"
           @select="handleDestSelect"
           @blur="handleDestBlur"
@@ -94,6 +94,12 @@ export default {
     // 出发城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDepartSearch(value, cb) {
+      if (!value) {
+        this.departData = []
+        // eslint-disable-next-line standard/no-callback-literal
+        cb([])
+        return
+      }
       if (!value) return
       this.$axios({
         url: '/airs/city',
@@ -116,7 +122,12 @@ export default {
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch(value, cb) {
-      if (!value) return
+      if (!value) {
+        this.destData = []
+        // eslint-disable-next-line standard/no-callback-literal
+        cb([])
+        return
+      }
       this.$axios({
         url: '/airs/city',
         params: {
@@ -130,7 +141,7 @@ export default {
           return val
         })
         this.destData = newData
-        cb(this.departData)
+        cb(newData)
       })
       // eslint-disable-next-line standard/no-callback-literal
       // cb([{ value: 1 }, { value: 2 }, { value: 3 }])
