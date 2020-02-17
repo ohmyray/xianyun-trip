@@ -25,7 +25,14 @@
 
     <div class="history">
       <h5>历史查询</h5>
-      <nuxt-link to="#">
+      <!-- 要循环的标签 -->
+      <nuxt-link
+        v-for="(item, index) in $store.state.air.history"
+        :key="index"
+        :to="
+          `/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`
+        "
+      >
         <el-row
           type="flex"
           justify="space-between"
@@ -33,8 +40,10 @@
           class="history-item"
         >
           <div class="air-info">
-            <div class="to-from">广州 - 上海</div>
-            <p>2019-06-16</p>
+            <div class="to-from">
+              {{ item.departCity }} - {{ item.destCity }}
+            </div>
+            <p>{{ item.departDate }}</p>
           </div>
           <span>选择</span>
         </el-row>
