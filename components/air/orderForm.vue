@@ -193,7 +193,7 @@ export default {
         return
       }
       this.$store
-        .dispatch('user/sendCaptcha', this.form.contactPhone)
+        .dispatch('user/captcha', { tel: this.form.contactPhone })
         .then((res) => {
           this.$message.success('验证码：000000')
         })
